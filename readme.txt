@@ -8,7 +8,10 @@ Install and turn on MySQL server v8.0
 MySQL 8.0 installer: https://dev.mysql.com/downloads/installer/
 Run everything with default options
 
-Step3:
+Step 3:
+Create an empty database in your MySQL server instance
+
+Step 4:
 Add an appsettings.Development.json file
 Example appsettings.Development.json file:
 {
@@ -27,7 +30,10 @@ Example appsettings.Development.json file:
     }
 }
 
-Step4:
+Step 5:
+In Visual Studio, execute the command "Update-Database" in the "Package Manager Console" window
+
+Step 6:
 Hit the endpoint "/api/token/login" with a POST request containing the following JSON content:
 {
 	"username":"un",

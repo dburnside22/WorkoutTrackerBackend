@@ -14,6 +14,15 @@ namespace WorkoutTrackerApi.Models
 			
 		}
 
+		protected override void OnModelCreating(ModelBuilder model)
+		{
+			base.OnModelCreating(model);
+			model.Entity<User>().HasData(new User { Id = 1, Username = "Carson" });
+			model.Entity<User>().HasData(new User { Id = 2, Username = "Dan" });
+			model.Entity<Exercise>().HasData(new Exercise { Id = 1, Name = "Squat" });
+			model.Entity<Exercise>().HasData(new Exercise { Id = 2, Name = "Deadlift" });
+		}
+
 		public DbSet<User> Users { get; set; }
 		public DbSet<Set> Sets { get; set; }
 		public DbSet<Exercise> Exercises { get; set; }
