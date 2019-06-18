@@ -22,8 +22,9 @@ namespace WorkoutTrackerApi.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<GetSet>> Get([FromQuery]int userId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+		public ActionResult<IEnumerable<GetSet>> Get([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
 		{
+			var userId = int.Parse(User.FindFirst("UserId").Value);
 			return db.Sets.Where(s => s.UserId == userId && s.Timestamp >= startDate && s.Timestamp <= endDate)
 				.Select(s => new GetSet
 				{

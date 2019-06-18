@@ -62,11 +62,7 @@ namespace WorkoutTrackerApi.Controllers
 
 		User Authenticate(Login login)
 		{
-			if (db.Users.Any(x => login.Username == x.Username))
-			{
-				return new User { Username = login.Username };
-			}
-			return null;
+			return db.Users.FirstOrDefault(x => login.Username == x.Username);			
 		}
 	}
 }
