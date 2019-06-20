@@ -40,12 +40,11 @@ namespace WorkoutTrackerApi.Controllers
 		[HttpPost]
 		public void Post([FromBody]PostSet request)
 		{
-			var usernameClaim = User.FindFirst("sub").Value;
-			var userEntity = db.Users.FirstOrDefault(x => x.Username == usernameClaim);
+			var userId = int.Parse(User.FindFirst("UserId").Value);
 			var timestamp = DateTime.UtcNow;
 			var newSet = new Set
 			{
-				UserId = userEntity.Id,
+				UserId = userId,
 				ExerciseId = request.ExerciseId,
 				DurationInMilliseconds = request.DurationInMilliseconds,
 				Reps = request.Reps,
