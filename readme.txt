@@ -51,3 +51,6 @@ The endpoint will return 400 if the username or password are missing, with JSON 
 		"An error message regarding the given property"
 	]
 }
+
+Step 7:
+When hitting other endpoints, include an HTTP header with the key "Authorization" and the value "bearer yourVeryVeryLongTokenString"
