@@ -53,7 +53,7 @@ The endpoint will return 400 if the username or password are missing, with JSON 
 }
 
 Step 7.1:
-You can view available endpoints by running the API project and visiting the url: https://localhost:44302/swagger/index.html
+You can view available endpoints by running the API project and visiting the url: https://localhost:[Your project's port number]/swagger/index.html
 
 Step 7.2:
 When hitting other endpoints, include an HTTP header with the key "Authorization" and the value "bearer yourVeryVeryLongTokenString"
