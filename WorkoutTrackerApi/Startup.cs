@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -49,6 +50,7 @@ namespace WorkoutTrackerApi
 			{
 				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
 			});
+			services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

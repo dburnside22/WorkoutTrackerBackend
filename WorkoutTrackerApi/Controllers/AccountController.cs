@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,11 +20,29 @@ namespace WorkoutTrackerApi.Controllers
 	{
 		IConfiguration config;
 		WtDbContext db;
+		IPasswordHasher<User> passwordHasher;
 
-		public AccountController(IConfiguration config, WtDbContext db)
+		public AccountController(IConfiguration config, WtDbContext db, IPasswordHasher<User> passwordHasher)
 		{
+			this.passwordHasher = passwordHasher;
 			this.db = db;
 			this.config = config;
+		}
+
+		[AllowAnonymous]
+		[HttpPost]
+		public IActionResult Register([FromBody]Login request)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var user = new User { Username = request.Username };
+			user.Password = passwordHasher.HashPassword(user, request.Password);
+			db.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+			db.SaveChanges();
+			return Ok();
 		}
 
 		[AllowAnonymous]
@@ -62,7 +81,19 @@ namespace WorkoutTrackerApi.Controllers
 
 		User Authenticate(Login login)
 		{
-			return db.Users.FirstOrDefault(x => login.Username == x.Username);			
+			var user = db.Users.FirstOrDefault(x => login.Username == x.Username);
+			if (user == null)
+				return null;
+			var result = passwordHasher.VerifyHashedPassword(user, user.Password, login.Password);
+			switch(result)
+			{
+				case PasswordVerificationResult.Success:
+				case PasswordVerificationResult.SuccessRehashNeeded:
+					return user;
+				case PasswordVerificationResult.Failed:
+				default:
+					return null;
+			}
 		}
 	}
 }
