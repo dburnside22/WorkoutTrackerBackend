@@ -22,11 +22,12 @@ namespace WorkoutTrackerApi
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(ILogger<Startup> logger, IConfiguration configuration)
 		{
+			this.logger = logger;
 			Configuration = configuration;
 		}
-
+		private ILogger<Startup> logger;
 		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
