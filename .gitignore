@@ -1,5 +1,6 @@
 [Bb]in/
 [Oo]bj/
 .vs/
-appsettings.[Dd]evelopment.json
+appsettings.Development.json
 *.csproj.user
+appsettings.Production.json
