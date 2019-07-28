@@ -38,9 +38,13 @@ namespace WorkoutTrackerApi.Controllers
 		}
 
 		[HttpPost]
-		public void Post([FromBody]PostSet request)
+		[Produces(typeof(GetSet))]
+		public ActionResult<GetSet> Post([FromBody]PostSet request)
 		{
 			var userId = int.Parse(User.FindFirst("UserId").Value);
+			var exercise = db.Exercises.Find(request.ExerciseId);
+			if (exercise == null)
+				return BadRequest("Invalid ExerciseId");
 			var timestamp = DateTime.UtcNow;
 			var newSet = new Set
 			{
@@ -53,6 +57,8 @@ namespace WorkoutTrackerApi.Controllers
 			};
 			db.Entry(newSet).State = Microsoft.EntityFrameworkCore.EntityState.Added;
 			db.SaveChanges();
+			newSet.Exercise = exercise;
+			return Ok(new GetSet(newSet));
 		}
 	}
 }
