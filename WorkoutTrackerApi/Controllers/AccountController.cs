@@ -31,7 +31,7 @@ namespace WorkoutTrackerApi.Controllers
 
 		[AllowAnonymous]
 		[HttpPost]
-		public IActionResult Register([FromBody]Login request)
+		public ActionResult Register([FromBody]Login request)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -47,25 +47,24 @@ namespace WorkoutTrackerApi.Controllers
 
 		[AllowAnonymous]
 		[HttpPost]
-		public IActionResult Login([FromBody]Login request)
+		public ActionResult<JwtToken> Login([FromBody]Login request)
 		{
 			if(!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
 
-			var user = Authenticate(request);
+			var user = authenticate(request);
 
 			if (user != null)
 			{
-				var tokenString = BuildToken(user);
-				return Ok(new { token = tokenString });
+				return Ok(buildToken(user));
 			}
 
 			return Unauthorized();
 		}
 
-		string BuildToken(User user)
+		JwtToken buildToken(User user)
 		{
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -76,10 +75,10 @@ namespace WorkoutTrackerApi.Controllers
 			  signingCredentials: creds,
 			  claims: claims);
 
-			return new JwtSecurityTokenHandler().WriteToken(token);
+			return new JwtToken { Token = new JwtSecurityTokenHandler().WriteToken(token), Expiration = token.ValidTo };
 		}
 
-		User Authenticate(Login login)
+		User authenticate(Login login)
 		{
 			var user = db.Users.FirstOrDefault(x => login.Username == x.Username);
 			if (user == null)
