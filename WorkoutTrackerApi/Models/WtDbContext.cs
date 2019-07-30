@@ -21,6 +21,8 @@ namespace WorkoutTrackerApi.Models
 			model.Entity<User>().HasData(new User { Id = 2, Username = "Dan", Password = "AQAAAAEAACcQAAAAEM1tKYwnVagw1a1hzyiL+oKE8WaNQiiH779QXwtusa+w63GaUEHmaFanqJao4BCuKQ==" });
 			model.Entity<Exercise>().HasData(new Exercise { Id = 1, Name = "Squat" });
 			model.Entity<Exercise>().HasData(new Exercise { Id = 2, Name = "Deadlift" });
+			model.Entity<Exercise>().HasData(new Exercise { Id = 3, Name = "Burpees" });
+			model.Entity<Exercise>().HasData(new Exercise { Id = 4, Name = "Jogging" });
 		}
 
 		public DbSet<User> Users { get; set; }
