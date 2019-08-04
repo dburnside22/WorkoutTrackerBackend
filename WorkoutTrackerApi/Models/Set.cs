@@ -16,6 +16,7 @@ namespace WorkoutTrackerApi.Models
 		public int? WeightInGrams { get; set; }
 		public int? DurationInMilliseconds { get; set; }
 		public int? Reps { get; set; }
+		public int? DistanceInFeet { get; set; }
 		public DateTime Timestamp { get; set; }
 	}
 }

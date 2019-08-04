@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutTrackerApi.Models;
 
 namespace WorkoutTrackerApi.Migrations
 {
     [DbContext(typeof(WtDbContext))]
-    partial class WtDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190804034012_CardioAndStrengthSets")]
+    partial class CardioAndStrengthSets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
