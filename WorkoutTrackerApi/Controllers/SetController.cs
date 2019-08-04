@@ -9,7 +9,7 @@ using WorkoutTrackerApi.Models;
 
 namespace WorkoutTrackerApi.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/[controller]/[action]")]
 	[ApiController]
 	[Authorize]
 	public class SetController : ControllerBase
@@ -30,6 +30,7 @@ namespace WorkoutTrackerApi.Controllers
 				{
 					Id = s.Id,
 					DurationInMilliseconds = s.DurationInMilliseconds,
+					DistanceInFeet = s.DistanceInFeet,
 					Reps = s.Reps,
 					ExerciseName = s.Exercise.Name,
 					Timestamp = s.Timestamp,
@@ -39,21 +40,41 @@ namespace WorkoutTrackerApi.Controllers
 
 		[HttpPost]
 		[Produces(typeof(GetSet))]
-		public ActionResult<GetSet> Post([FromBody]PostSet request)
+		public ActionResult<GetSet> PostStrengthSet([FromBody]PostStrengthSet request)
 		{
 			var userId = int.Parse(User.FindFirst("UserId").Value);
 			var exercise = db.Exercises.Find(request.ExerciseId);
 			if (exercise == null)
 				return BadRequest("Invalid ExerciseId");
-			var timestamp = DateTime.UtcNow;
+			var newSet = new Set
+			{
+				UserId = userId,
+				ExerciseId = request.ExerciseId,
+				Reps = request.Reps,
+				WeightInGrams = request.WeightInGrams,
+				Timestamp = request.Timestamp
+			};
+			db.Entry(newSet).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+			db.SaveChanges();
+			newSet.Exercise = exercise;
+			return Ok(new GetSet(newSet));
+		}
+
+		[HttpPost]
+		[Produces(typeof(GetSet))]
+		public ActionResult<GetSet> PostCardioSet([FromBody]PostCardioSet request)
+		{
+			var userId = int.Parse(User.FindFirst("UserId").Value);
+			var exercise = db.Exercises.Find(request.ExerciseId);
+			if (exercise == null)
+				return BadRequest("Invalid ExerciseId");
 			var newSet = new Set
 			{
 				UserId = userId,
 				ExerciseId = request.ExerciseId,
 				DurationInMilliseconds = request.DurationInMilliseconds,
-				Reps = request.Reps,
-				WeightInGrams = request.WeightInGrams,
-				Timestamp = timestamp
+				DistanceInFeet = request.DistanceInFeet,
+				Timestamp = request.Timestamp
 			};
 			db.Entry(newSet).State = Microsoft.EntityFrameworkCore.EntityState.Added;
 			db.SaveChanges();

@@ -21,12 +21,17 @@ namespace WorkoutTrackerApi.Dtos
 			Reps = set.Reps;
 			Timestamp = set.Timestamp;
 			ExerciseName = set.Exercise?.Name;
+			DistanceInFeet = set.DistanceInFeet;
 		}
+
 		public int Id { get; set; }
 		public string ExerciseName { get; set; }
 		public int? WeightInGrams { get; set; }
 		public int? DurationInMilliseconds { get; set; }
 		public int? Reps { get; set; }
+		public int? DistanceInFeet { get; set; }
 		public DateTime Timestamp { get; set; }
+		public bool WasCardio { get { return DistanceInFeet != null || DurationInMilliseconds != null; } }
+		public bool WasStrength { get { return WeightInGrams != null && Reps != null; } }
 	}
 }
