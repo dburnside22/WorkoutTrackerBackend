@@ -39,7 +39,6 @@ namespace WorkoutTrackerApi.Controllers
 		}
 
 		[HttpPost]
-		[Produces(typeof(GetSet))]
 		public ActionResult<GetSet> PostStrengthSet([FromBody]PostStrengthSet request)
 		{
 			var userId = int.Parse(User.FindFirst("UserId").Value);
@@ -61,7 +60,6 @@ namespace WorkoutTrackerApi.Controllers
 		}
 
 		[HttpPost]
-		[Produces(typeof(GetSet))]
 		public ActionResult<GetSet> PostCardioSet([FromBody]PostCardioSet request)
 		{
 			var userId = int.Parse(User.FindFirst("UserId").Value);

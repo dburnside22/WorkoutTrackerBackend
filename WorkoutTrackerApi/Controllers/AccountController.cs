@@ -16,6 +16,7 @@ using WorkoutTrackerApi.Models;
 namespace WorkoutTrackerApi.Controllers
 {
 	[Route("api/[controller]/[action]")]
+	[ApiController]
 	public class AccountController : ControllerBase
 	{
 		IConfiguration config;
@@ -33,11 +34,6 @@ namespace WorkoutTrackerApi.Controllers
 		[HttpPost]
 		public ActionResult Register([FromBody]Login request)
 		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
 			var user = new User { Username = request.Username };
 			user.Password = passwordHasher.HashPassword(user, request.Password);
 			db.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Added;
@@ -49,11 +45,6 @@ namespace WorkoutTrackerApi.Controllers
 		[HttpPost]
 		public ActionResult<JwtToken> Login([FromBody]Login request)
 		{
-			if(!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
 			var user = authenticate(request);
 
 			if (user != null)
