@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 using WorkoutTrackerApi.Models;
 
@@ -49,7 +50,8 @@ namespace WorkoutTrackerApi
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+				c.SwaggerDoc("v1", new Info { Title = "Workout Tracker API", Version = "v1", Description = "Reminder - all date/time strings be formatted as UTC, ISO 1806 format: YYYY-MM-DDTHH:MM:SS.sssZ" });
+				c.OperationFilter<SecurityRequirementsOperationFilter>();
 			});
 			services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 		}
